@@ -29,23 +29,36 @@ Enter your data in R and plot their frequency distribution using either hist() o
 # Load up some packages
 library(dplyr)
 library(ggplot2)
+library(glue)
 
 ```
 
 ```{r}
 ## Plot those data here! 
+walker_interval <- read.csv('~/Downloads/walker_count_data.csv')
+hist(walker_interval$count)
 
 ```
 
 ### Get to know your data by answering these questions:
 
 1.  What is the general shape of the data?
+
+    Looks generally flat or skewed right.
+
 2.  Are the data bounded (e.g., percents, non-negative)?
+
+    Data are non-negative
+
 3.  Are the data continuous, categorical, binary, or what?
+
+    Data are discrete and quantitative
 
 ### Discuss with the class: What distribution do your data follow?
 
 Are they normal? If not, what are they?
+
+Poisson-Like Distribution due to its discrete values. Likely with more data points, the distribution would become more normal (probably centering between 2-4 walkers per 30-second interval).
 
 Next, let's get to know some of the most common distributions in Ecology and Evo bio:
 
@@ -129,6 +142,7 @@ Using this equation you can calculate the probability of getting x successes in 
 
 ```{r}
 # do your calculations here 
+mean_walkers <- mean(walker_interval$count)
 
 ```
 
@@ -139,6 +153,7 @@ Plot a frequency distribution of these simulated data.
 ```{r}
 # E.g., You collected data from 35 leaves and their mean length was 6 and sd was .2
 # rnorm(N = 35, mean = 6, sd = .2)
+rpois(1000, lambda = mean_walkers) %>% hist(main = glue("1000 values from a poisson distribution with mean = {round(mean_walkers, digits=2)}"))
 
 ```
 
