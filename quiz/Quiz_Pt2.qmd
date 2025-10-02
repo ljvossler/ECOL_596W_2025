@@ -21,14 +21,12 @@ Please answer these questions in R using whatever syntax makes sense to you. Fee
 
 **If you use Google or ChatGPT etc. to help you get to an answer, please note so on your answer**
 
-Step 1. ARE YOU IN A BRANCH?????  
-Step 2. Save this file as lastname_quiz.qmd in the same quiz folder.  
-Step 3. Once you are done, click "render" above. This will create the .html file
-that I will evaluate.  
-Step 4. Stage and commit your changes, push to your github.  
-Step 5. Submit a pull request. If github warns you of conflicts please try and fix them
-before submitting your pull request (did you rename the file??? ).  
-(Step 6. In case of utter disaster, email Sabrina your .html file.)  
+Step 1. ARE YOU IN A BRANCH?????\
+Step 2. Save this file as lastname_quiz.qmd in the same quiz folder.\
+Step 3. Once you are done, click "render" above. This will create the .html file that I will evaluate.\
+Step 4. Stage and commit your changes, push to your github.\
+Step 5. Submit a pull request. If github warns you of conflicts please try and fix them before submitting your pull request (did you rename the file??? ).\
+(Step 6. In case of utter disaster, email Sabrina your .html file.)
 
 ```{r, message = F}
 # load packages and data 

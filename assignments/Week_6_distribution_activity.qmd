@@ -9,17 +9,17 @@ embed-resources: true
 
 ## Part 1: Collect some Data
 
-Get in a group of \~2 and select one or more data collection activities. Collect data for approximately 10 minutes (aim for at least 20 data points as a team) and then find a way to get your data into R.
+Collect data for approximately 10 minutes (aim for at least 20 data points) and then find a way to get your data into R.
 
 ### Activities
 
-1.  Find a window or view onto campus. Count how many people walk by in a set period of time (3-5 min). Each team member try and pick a different vantage spot and combine your data at the end.
+1.  Go out to the mall and pick a vantage point. Count how many people walk by in a 30 second interval. Repeat (data will be 0, 3, 8, 0, 0, etc.)
 2.  Measure the distance between people's thumb and pinky when the fingers are fully outstretched.
 3.  Go find a tree and measure some leaves on it.
-4.  Pull some coins out of this bag. Count the frequency of green chips.
-5.  Roll the die and count the frequency of each number that pops up.
+4.  Pull a coin at random from the bag. Is it blue? Repeat (Data will be "b", "nb", "nb", "b" etc.)
+5.  Roll the die and count the frequency of each number that pops up. (Data will be 1,4,1,2,6 etc.)
 6.  Go for a walk and for each sidewalk square count the number of gum spots/trash on it.
-7.  Clairvoyance rate: Take a deck of cards and draw cards without looking. For every 10 cards, record how many cards you successfully predicted the suite of in advance of looking at it. (can do this in pairs)
+7.  Clairvoyance rate: Take a deck of cards and draw cards without looking. For every set of 10 cards, record how many cards you successfully predicted the suite of in advance of looking at it. (Data should look like set 1: \# correct, \# incorrect; set 2: \# correct, \# incorrect
 
 ## Part 2: Plot and inspect your data
 
@@ -43,7 +43,7 @@ library(ggplot2)
 2.  Are the data bounded (e.g., percents, non-negative)?
 3.  Are the data continuous, categorical, binary, or what?
 
-### Discuss with your group: What distribution do your data follow?
+### Discuss with the class: What distribution do your data follow?
 
 Are they normal? If not, what are they?
 
@@ -150,7 +150,7 @@ Do the simulated data look like yours? Why or why not?
 # do your calculations here 
 ```
 
-#### Calculating probabilties from density functions:
+#### Calculating probabilities from density functions:
 
 Choose three values within your data: a common one, a less common one, and a value that you did not observe at all. Using the probability density functions linked above, calculate the probability of observing each of those values assuming the parameters you estimated are the true ones.
 
@@ -160,6 +160,8 @@ Choose three values within your data: a common one, a less common one, and a val
 l = 5 # lambda
 k = 7 # observed value
 
+# This is the poisson density function. It says: 
+# "the probability of observing k snakes given a lambda of 5" 
 (l^k)*(exp(-l))/(factorial(k))
 
 
