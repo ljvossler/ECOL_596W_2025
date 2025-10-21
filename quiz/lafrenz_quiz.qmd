@@ -1,0 +1,244 @@
+---
+title: "Quiz 1: Part 2"
+format: html
+editor: visual
+embed-resources: true
+css: |
+      <style>
+        body { font-family: Arial, sans-serif; }
+      </style>
+js: |
+      <script>
+        console.log('Custom JavaScript loaded.');
+      </script>
+---
+
+## Part 2: Coding in action
+
+### Instructions
+
+Please answer these questions in R using whatever syntax makes sense to you. Feel free to use the R help pages and/or notes from class.
+
+**If you use Google or ChatGPT etc. to help you get to an answer, please note so on your answer**
+
+Step 1. ARE YOU IN A BRANCH?????\
+Step 2. Save this file as lastname_quiz.qmd in the same quiz folder.\
+Step 3. Once you are done, click "render" above. This will create the .html file that I will evaluate.\
+Step 4. Stage and commit your changes, push to your github.\
+Step 5. Submit a pull request. If github warns you of conflicts please try and fix them before submitting your pull request (did you rename the file??? ).\
+(Step 6. In case of utter disaster, email Sabrina your .html file.)
+
+```{r, message = F}
+# load packages and data 
+library(ggplot2)
+library(dslabs)
+library(dplyr)
+library(readr)
+library(patchwork)
+```
+
+#### Load your data:
+
+Load the *swallows.csv* into R, call it swallows. This data frame lists results of an experiment on tree swallows. Each row is a nest. Nests were put into one of two **treatments**: simulated predation (predator), or control (control). Along with treatment you have the following columns:\
+**nest_fate** = whether the nest fledged any young or whether they all died\
+**brood** = number of nestlings\
+**n_fledged** = number of nestlings that fledged.
+
+You also have a separate data frame called *brightness.csv* where each row lists the plumage brightness (a sexual signal) for the female at each nest. Load this one up too.
+
+```{r}
+# Type your answer in this box using R code 
+#swallows <- read.csv(file.choose(~swallows.csv))
+#brightness_swal <- read.csv(file.choose(~brightness.csv))
+swallows <- read.csv("swallows.csv")
+brightness_swal <- read.csv("brightness.csv")
+
+# Google? No
+
+
+
+```
+
+#### Wrangle your data
+
+You realize that you want to add brightness information onto your main swallows data frame. Join these data frames using nest_id as your key variable. Describe how you would check to make sure this join worked as intended.undefined
+
+```{r}
+#Answer
+class(swallows$nestbox)
+class(brightness_swal$nestbox)
+
+swallows_joined <- swallows %>%
+  left_join(
+    brightness_swal %>%
+      select(nestbox, brightness) %>%
+      distinct(nestbox, .keep_all = TRUE),
+    by = "nestbox"
+  )
+
+#check join worked
+#compare a random set of nest boxes to ensure that the correct brightness value was ascribed to the right swallow based on their nest box
+filter(swallows, nestbox %in% c("2_109","4_80","2_32","1_85","4_62"))
+filter(brightness_swal, nestbox %in% c("2_109","4_80","2_32","1_85","4_62"))
+filter(swallows_joined, nestbox %in% c("2_109","4_80","2_32","1_85","4_62"))
+
+#count number of observations of different nestboxes to ensure no duplicates happened to nestboxes upon joining
+count(swallows_joined, nestbox)
+
+#Google? Yes, looked up how to perform a left join.
+
+
+```
+
+Inspect your combined data frame. Do some sort of quick sanity check on each column to catch any obvious entry errors. Correct as necessary
+
+```{r}
+# Answer
+#general check on column presence
+head(swallows_joined)
+
+#general check on class of each variable
+str(swallows_joined)
+
+#check for na
+sum(is.na(swallows_joined$nestbox))
+sum(is.na(swallows_joined$treatment))
+sum(is.na(swallows_joined$brood))
+sum(is.na(swallows_joined$n_fledged))
+sum(is.na(swallows_joined$brightness))
+#identified one na in brightness
+brightness_corrected <- swallows_joined |> filter(brightness != is.na(brightness))
+
+ggplot(brightness_corrected, aes(treatment, brightness))+
+  geom_boxplot()
+#shows low brightness values in predation category
+filter(brightness_corrected, brightness < 40)
+summarize(brightness_corrected, avg = mean(brightness), deviation = sd(brightness))
+#three points are more than 2 standard deviations away, but don't seem like error values
+
+ggplot(brightness_corrected, aes(brood, n_fledged))+
+  geom_point()
+#nothing unusual
+
+#check that there are no observations where n_fledged is greater than the brood size originally
+filter(brightness_corrected, n_fledged > brood)
+#there are not
+
+# Google? No
+```
+
+Create a new column called prop_fledged that contains the proportion of nestlings that fledged from each nest.
+
+```{r}
+#Answer
+swallows_data <- brightness_corrected |> mutate(prop_fledged = n_fledged/brood)
+str(swallows_data$prop_fledged)
+
+# Google? No
+
+```
+
+#### Explore the data
+
+What was the mean proportion of nestlings fledged in each treatment?
+
+```{r}
+# Answer 
+#filter out NaN
+swallows_data_2 <- swallows_data |> filter(prop_fledged != is.nan(prop_fledged))
+#It was being finicky, so eliminating 0 as the brood size instead so it doesn't return not a number
+swallows_data <- brightness_corrected |> filter(brood != 0) |> mutate(prop_fledged = n_fledged/brood)
+
+swallows_data |>
+  group_by(treatment) |>
+  summarise(avg_prop_fledged = mean(prop_fledged))
+
+#Control: 0.7055556
+#Predation: 0.3316667
+
+# Google? No, because I got it working without googling. But yes, because I got curious why the is.nan function wasn't working. It wanted the syntax: filter(!is.nan(prop_fledged))
+
+```
+
+Create a plot showing fledging success differences between treatments
+
+```{r}
+# Answer
+dark_col <- c("#9E3C29","#29679E")
+
+ggplot(swallows_data, aes(treatment, prop_fledged, fill = treatment, color = treatment))+
+  geom_boxplot()+
+  labs(
+    title = "Fledgling Success Between Treatments",
+    x = "Treatment Group",
+    y = "Proportion of Successful Fledglings",
+  )+
+  scale_color_manual(values = dark_col)+
+   geom_dotplot(binaxis='y', stackdir='center', dotsize=2, binwidth = .02)+
+  theme_minimal(base_size = 16)+
+  theme(
+    legend.position = "none")
+
+# Google? Yes, specifications for graph like size and colors and how to overlay data points onto a boxplot
+
+
+```
+
+Is there any evidence that female brightness influenced fledging success? Create a plot to visually investigate this question.
+
+```{r}
+# Answer (I answered with several graphs, because I wanted to see the effects of brightness independent of treatment group first)
+
+control_data <- swallows_data |> filter(treatment == "Control")
+predation_data <- swallows_data |> filter(treatment == "Predation")
+
+plot_cont <- ggplot(control_data, aes(brightness, prop_fledged))+
+  geom_point(color = "palevioletred1", size = 3)+
+  labs(
+    title = "Fledging Success vs Maternal Brightness in Control Group",
+    x = "Mother Brightness",
+    y = "Proportion of Successful Fledging"
+  )+
+  theme_classic(base_size = 11)+
+  theme(plot.title = element_text(size = 8), legend.position = "none")
+
+plot_pred <- ggplot(predation_data, aes(brightness, prop_fledged))+
+  geom_point(color = "steelblue", size = 3)+
+   labs(
+    title = "Fledging Success vs Maternal Brightness in Predation Group",
+    x = "Mother Brightness",
+    y = "Proportion of Successful Fledging"
+   )+
+  theme_classic(base_size = 11)+
+  theme(plot.title = element_text(size = 8), legend.position = "none")
+
+plot_cont + plot_pred
+
+#omiting the outliers 2 standard deviations away and doing a combined graph
+swallows_data_omit <- swallows_data |> filter(brightness > 35) |> filter(brightness < 67)
+predation_data_2 <- swallows_data |> filter(treatment == "Predation") |> filter(brightness > 35) |> filter(brightness < 67)
+
+plot_pred_cor <- ggplot(predation_data_2, aes(brightness, prop_fledged))+
+  geom_point(color = "steelblue", size = 3)+
+   labs(
+    title = "Fledging Success vs Maternal Brightness in Predation Group",
+    x = "Mother Brightness",
+    y = "Proportion of Successful Fledging"
+   )+
+  theme_classic(base_size = 11)+
+  theme(plot.title = element_text(size = 8), legend.position = "none")
+
+plot_combined <- ggplot(swallows_data_omit, aes(brightness, prop_fledged))+
+  geom_point(color = "plum", size = 3)+
+   labs(
+    title = "Fledging Success vs Maternal Brightness",
+    x = "Mother Brightness",
+    y = "Proportion of Successful Fledging"
+   )+
+  theme_classic(base_size = 11)+
+  theme(plot.title = element_text(size = 8), legend.position = "none")
+
+plot_pred_cor + plot_combined
+
+# Google? Yes for placing graphs next to each other and resizing titles
+```

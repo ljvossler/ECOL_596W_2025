@@ -2,34 +2,24 @@
 
 
 # What proportion p of a planet's surface is water?
-<<<<<<< HEAD
 # Toss a globe 12 times, what do you find?
 water <- 7
-=======
-# Toss a globe 9 times, what do you find?
-water <- 5
->>>>>>> e9ed7c218b5f16ad1e5e2dd79299ac6bf25301d5
 land <- 4
 total_toss <- water + land
 
-
 # dbinom will give us the probability
 # of seeing W waters for any hypothesized p
-<<<<<<< HEAD
-dbinom(water, size = total_toss, prob = 0.63)
-=======
+
 dbinom(water, size = total_toss, prob = 0.2)
->>>>>>> e9ed7c218b5f16ad1e5e2dd79299ac6bf25301d5
+
 
 # Let's say we have no idea how much water on earth there is,
 # so we'd like to
 # simulate a range of possibilities
 # ranging from p = 0 (all land) to p = 1 (all water)
 
-p_grid <- data.frame(ps = seq(from = 0, to = 1,
-                              length.out = 100))
-p_grid$likelihoods <- dbinom(water, size = total_toss,
-                             prob = p_grid$ps)
+p_grid <- data.frame(ps = seq(from = 0, to = 1, length.out = 100))
+p_grid$likelihoods <- dbinom(water, size = total_toss, prob = p_grid$ps)
 head(p_grid)
 
 plot(likelihoods ~ ps, data = p_grid, pch = 19)
@@ -59,13 +49,13 @@ plot(posterior ~ ps, data = p_grid, pch = 19)
 
 # A small Monte Carlo simulation from McElreath
 
-n_samples <- 1000
-p <- rep( NA , n_samples )
-p[1] <- 0.5 # start assuming the proportion of water = 0.5
+n_samples <- 1000 # the number of iterations we want to run
+p <- rep( NA , n_samples ) # a place to save our results
+p[1] <- 0.5 # A starting point: assuming the proportion of water = 0.5
 W <- 6 # Observed data: in 9 tosses we got 6 waters
 L <- 3 # Observed data: in 9 tosses we got 3 lands
 
-# run a MCMC
+# run a MCMC (annotated code below)
 
 for ( i in 2:n_samples ) {
   p_new <- rnorm( 1 , mean = p[i-1] , sd = 0.1 )
@@ -81,7 +71,7 @@ hist(p)
 # let's break up this loop and see what it says
 # The first iteration of the loop is i = 2
 
-# pick a new P from a random distribution, centered on our original p, with sd = 0.1
+# pick a new p from a random distribution, centered on our original p, with sd = 0.1
 # Notice that the indicies are referring to step 2, or step 2-1 e.g. p[i-1]
 p_new <- rnorm( 1 , p[1] , 0.1 )
 if ( p_new < 0 ) p_new <- abs( p_new ) # quick check to make sure p ends up > 0
@@ -103,9 +93,11 @@ p[2] <- ifelse( runif(1) < q1/q0 , p_new , p[i-1] )
 
 # Break this up: If q1 has a higher likelihood, q1/q0 will be > 1.
 # Runif will return a number between 0 and 1. If q1 is better,
-# that ratio will be greater than runif(1), and so we should keep p_new,
-# otherwise, keep p_old.
-#
+# the ratio of q1/q0 will be greater than runif(1), and so we should keep p_new.
+# P_new then becomes our next starting p value in the MCMC chain.
+# However, if the original q0 was better, q1/q0 will be < 1. In that case,
+# we'll probably keep the old p, but with some wiggle room that will keep us from
+# getting stuck in any particular place.
 
 
 

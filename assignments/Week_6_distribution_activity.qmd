@@ -30,11 +30,13 @@ Enter your data in R and plot their frequency distribution using either hist() o
 library(dplyr)
 library(ggplot2)
 
+walks <- read.csv("~/Downloads/596W_distribution.csv")
+head(walks)
 ```
 
 ```{r}
 ## Plot those data here! 
-
+hist(walks$count)
 ```
 
 ### Get to know your data by answering these questions:
@@ -129,7 +131,7 @@ Using this equation you can calculate the probability of getting x successes in 
 
 ```{r}
 # do your calculations here 
-
+mean(walks$count)
 ```
 
 #### Simulate the same number of data points as you have from a random distribution with the same parameters as the ones you estimated.

@@ -30,6 +30,7 @@ Step 5. Submit a pull request. If github warns you of conflicts please try and f
 
 ```{r, message = F}
 # load packages and data 
+
 library(ggplot2)
 library(dslabs)
 library(dplyr)
@@ -46,9 +47,14 @@ You also have a separate data frame called *brightness.csv* where each row lists
 
 ```{r}
 # Type your answer in this box using R code 
+swallows <- read.csv("swallows.csv", header= TRUE)
+print(swallows)
 
+brightness <- read.csv("brightness.csv", header = TRUE)
+print(brightness)
 
 # Google? y/n
+# no
 
 
 
@@ -60,10 +66,12 @@ You realize that you want to add brightness information onto your main swallows 
 
 ```{r}
 #Answer
-
-
+nest_id <- mutate(swallows, brightness = brightness$brightness)
+print(nest_id)
+#checked by using the print function to see that brightness was added to the df
 
 #Google? 
+# used the izzary book
 
 
 ```
@@ -72,16 +80,22 @@ Inspect your combined data frame. Do some sort of quick sanity check on each col
 
 ```{r}
 # Answer
+str(nest_id)
+View(nest_id)
 
 # Google y/n 
+# yes - izzary textbook  
 ```
 
 Create a new column called prop_fledged that contains the proportion of nestlings that fledged from each nest.
 
 ```{r}
 #Answer
+nest_id <- mutate(nest_id, prop_fledged =  nest_id$n_fledged/nest_id$brood)
+
 
 # Google? y/n
+# no
 
 ```
 
@@ -91,18 +105,33 @@ What was the mean proportion of nestlings fledged in each treatment?
 
 ```{r}
 # Answer 
+colnames(nest_id)
+str(nest_id$prop_fledged)
 
+mean(nest_id$prop_fledged[!is.nan(nest_id$prop_fledged)])
+
+
+# mean = 0.5059829
 
 # Google? y/n
-
+# yes - ChatGPT and Izzary textbook
 ```
 
 Create a plot showing fledging success differences between treatments
 
 ```{r}
 # Answer
+ggplot(nest_id, aes(x = nest_id$treatment, y = nest_id$prop_fledged)) +
+  geom_boxplot() +
+  labs(title = "Fledgling success by treatment",
+       x = "Treatment type",
+       y = "Proportion of nestlings fledged") +
+theme_minimal()
+
+#The brids experiencing predation (whether that be mother or offsprign is unclear in the dataset) have lower success rates
 
 # Google? y/n
+# yes - chatGPT
 
 
 ```
@@ -111,7 +140,17 @@ Is there any evidence that female brightness influenced fledging success? Create
 
 ```{r}
 # Answer
+ggplot(nest_id, aes(x = nest_id$brightness, y = nest_id$prop_fledged, color = nest_id$treatment)) +
+  geom_point(alpha = 0.6) +
+  labs(title = "Predation and brightness effects on proportion fledged",
+       x = "Bird Brightness",
+       y = "Proportion fledged") +
+  theme_minimal()
+
+#There does not seem to be an effect of brightness on the proportion of fledglings
+
 
 # Google? y/n
+# yes - Izzary textbook and chatgpt
 
 ```

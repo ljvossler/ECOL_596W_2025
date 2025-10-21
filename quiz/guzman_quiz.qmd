@@ -1,0 +1,152 @@
+---
+title: "Quiz 1: Part 2"
+format: html
+editor: visual
+embed-resources: true
+css: |
+      <style>
+        body { font-family: Arial, sans-serif; }
+      </style>
+js: |
+      <script>
+        console.log('Custom JavaScript loaded.');
+      </script>
+---
+
+## Part 2: Coding in action
+
+### Instructions
+
+Please answer these questions in R using whatever syntax makes sense to you. Feel free to use the R help pages and/or notes from class.
+
+**If you use Google or ChatGPT etc. to help you get to an answer, please note so on your answer**
+
+Step 1. ARE YOU IN A BRANCH?????\
+Step 2. Save this file as lastname_quiz.qmd in the same quiz folder.\
+Step 3. Once you are done, click "render" above. This will create the .html file that I will evaluate.\
+Step 4. Stage and commit your changes, push to your github.\
+Step 5. Submit a pull request. If github warns you of conflicts please try and fix them before submitting your pull request (did you rename the file??? ).\
+(Step 6. In case of utter disaster, email Sabrina your .html file.)
+
+```{r, message = F}
+# load packages and data 
+library(ggplot2)
+library(dslabs)
+library(dplyr)
+```
+
+#### Load your data:
+
+Load the *swallows.csv* into R, call it swallows. This data frame lists results of an experiment on tree swallows. Each row is a nest. Nests were put into one of two **treatments**: simulated predation (predator), or control (control). Along with treatment you have the following columns:\
+**nest_fate** = whether the nest fledged any young or whether they all died\
+**brood** = number of nestlings\
+**n_fledged** = number of nestlings that fledged.
+
+You also have a separate data frame called *brightness.csv* where each row lists the plumage brightness (a sexual signal) for the female at each nest. Load this one up too.
+
+```{r}
+# Type your answer in this box using R code 
+swallows <- read.csv("swallows.csv", header = T, sep = ",")
+brightness <- read.csv("brightness.csv", header = T, sep = ",")
+
+head(swallows)
+head(brightness)
+
+# Google? y/n
+# No
+```
+
+#### Wrangle your data
+
+You realize that you want to add brightness information onto your main swallows data frame. Join these data frames using nest_id as your key variable. Describe how you would check to make sure this join worked as intended.undefined
+
+```{r}
+#Answer
+# Joining the brightness df to the swallows df using left_join (swallows df in the left)
+
+swallows2 <- left_join(swallows, brightness, by = join_by(nestbox))
+
+# Checking if the brightness column was added
+str(swallows2)
+
+# Picking a random nest id to confirm that they have the correct brightness value in the new df
+brightness %>% filter(nestbox == "2_95")
+swallows2 %>% filter(nestbox == "2_95")
+
+#Google? y/n
+# The Help tab in R because I couldn't remember how to specify the column to join by
+```
+
+Inspect your combined data frame. Do some sort of quick sanity check on each column to catch any obvious entry errors. Correct as necessary
+
+```{r}
+# Answer
+summary(swallows2)
+filter(swallows2, is.na(brightness) == T)
+
+table(swallows2$treatment)
+table(swallows2$nestbox)
+boxplot(swallows2$brightness)
+boxplot(swallows2$brood)
+boxplot(swallows2$n_fledged)
+
+
+# There only seems to be one error, the NA value in brightness, but I didn't remove it because the rest of the data may be useful
+
+# Google? y/n
+# No
+```
+
+Create a new column called prop_fledged that contains the proportion of nestlings that fledged from each nest.
+
+```{r}
+#Answer
+
+swallows2$prop_fledged <- swallows2$n_fledged/swallows2$brood
+
+# Google? y/n
+# No
+```
+
+#### Explore the data
+
+What was the mean proportion of nestlings fledged in each treatment?
+
+```{r}
+# Answer 
+mean(swallows2$prop_fledged, na.rm = T)
+
+# Google? y/n
+# No
+```
+
+Create a plot showing fledging success differences between treatments
+
+```{r}
+# Answer
+ggplot(swallows2, aes(x = treatment, y = prop_fledged, fill = treatment)) +
+  geom_boxplot() +
+  labs(x = "Treatment", y = "Fledging success") +
+  theme_bw()
+
+# Success in the control is slightly higher compared to the predation treatment
+
+# Google? y/n
+#No
+```
+
+Is there any evidence that female brightness influenced fledging success? Create a plot to visually investigate this question.
+
+```{r}
+# Answer
+
+ggplot(swallows2, aes(x = brightness, y = prop_fledged)) +
+  geom_point() +
+  labs(x = "Femle brightness", y = "Fledging success") +
+  theme_bw()
+
+# There doesn't seem to be any indication that female brightness is related to fledging success
+
+# Google? y/n
+# No
+```

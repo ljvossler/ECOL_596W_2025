@@ -1,0 +1,133 @@
+---
+title: "Quiz 1: Part 2"
+format: html
+editor: visual
+embed-resources: true
+css: |
+      <style>
+        body { font-family: Arial, sans-serif; }
+      </style>
+js: |
+      <script>
+        console.log('Custom JavaScript loaded.');
+      </script>
+---
+
+## Part 2: Coding in action
+
+### Instructions
+
+Please answer these questions in R using whatever syntax makes sense to you. Feel free to use the R help pages and/or notes from class.
+
+**If you use Google or ChatGPT etc. to help you get to an answer, please note so on your answer**
+
+Step 1. ARE YOU IN A BRANCH?????\
+Step 2. Save this file as lastname_quiz.qmd in the same quiz folder.\
+Step 3. Once you are done, click "render" above. This will create the .html file that I will evaluate.\
+Step 4. Stage and commit your changes, push to your github.\
+Step 5. Submit a pull request. If github warns you of conflicts please try and fix them before submitting your pull request (did you rename the file??? ).\
+(Step 6. In case of utter disaster, email Sabrina your .html file.)
+
+```{r, message = F}
+# load packages and data 
+library(ggplot2)
+library(dslabs)
+library(dplyr)
+```
+
+#### Load your data:
+
+Load the *swallows.csv* into R, call it swallows. This data frame lists results of an experiment on tree swallows. Each row is a nest. Nests were put into one of two **treatments**: simulated predation (predator), or control (control). Along with treatment you have the following columns:\
+**nest_fate** = whether the nest fledged any young or whether they all died\
+**brood** = number of nestlings\
+**n_fledged** = number of nestlings that fledged.
+
+You also have a separate data frame called *brightness.csv* where each row lists the plumage brightness (a sexual signal) for the female at each nest. Load this one up too.
+
+```{r}
+# Type your answer in this box using R code 
+library(ggplot2)
+library(dslabs)
+library(dplyr)
+
+setwd('C:/Users/DUGGA/OneDrive/Desktop/Ari/ECOL_596W_2025-ari/quiz')
+swallows <- read.csv("swallows.csv")
+brightness <- read.csv("brightness.csv")
+# I know I shouldn't set the wd in here, but RStudio could not render the html file for me if I did not set the wd in these lines.
+
+# Google? y/n
+# No.
+
+
+```
+
+#### Wrangle your data
+
+You realize that you want to add brightness information onto your main swallows data frame. Join these data frames using nest_id as your key variable. Describe how you would check to make sure this join worked as intended.undefined
+
+```{r}
+#Answer
+swalbright <- merge(swallows, brightness, by = 'nestbox')
+#To check this worked as intended, I went back to the original data frames and made sure that the brightness values in the brightness dataframe matched their brood and n_fledged values in the swallows dataframe. I did this for five birds.
+
+#Google? 
+#Yes, but just for the merge command. From there I just used the help section in RStudio to use the "by" command.
+
+
+```
+
+Inspect your combined data frame. Do some sort of quick sanity check on each column to catch any obvious entry errors. Correct as necessary
+
+```{r}
+# Answer
+swalbrightgood <- swalbright |> filter(brightness != 'NA')
+# I just removed the row with an "NA" value for brightness. I also checked that no observation had more fledged chicks than chicks.
+
+# Google y/n 
+# No
+```
+
+Create a new column called prop_fledged that contains the proportion of nestlings that fledged from each nest.
+
+```{r}
+#Answer
+swal10 <- swalbrightgood |> mutate(prop_fledged = n_fledged/brood) |> filter(brood != 0)
+# Here I am taking out all the observations where the brood was 0 because obviously if there are no chicks there are no fledglings. Having n_fledged/brood also gives us NaN values, which mess up the graphs for the last two questions.
+
+# Google? y/n
+# No
+```
+
+#### Explore the data
+
+What was the mean proportion of nestlings fledged in each treatment?
+
+```{r}
+# Answer 
+swal11 <- swal10 |> group_by(treatment) |> summarize(mean = mean(prop_fledged, na.rm = T))
+# Needed to take out NAs to not mess up the mean calculation.
+
+# Google? y/n
+# Yes, just a small check of summarise syntax. Could have used help section in RStudio.
+```
+
+Create a plot showing fledging success differences between treatments
+
+```{r}
+# Answer
+ggplot(swal10, aes(treatment, prop_fledged)) + geom_boxplot() + labs(x = 'Treatment', y = 'Proportion Fledged', title = 'Proportion Fledged by Treatment')
+# Google? y/n
+# Yes, just for labels
+
+```
+
+Is there any evidence that female brightness influenced fledging success? Create a plot to visually investigate this question.
+
+```{r}
+# Answer
+ggplot(swal10, aes(brightness, prop_fledged)) + geom_point() + labs(x = 'Brightness', y = 'Proportion Fledged', title = 'Proportion Fledged by Maternal Brightness') + geom_smooth(method=lm, se=FALSE)
+#There does not seem to be any relationship between maternal brightness and fledging success. The line-of-best-fit that R gives is almost completely flat, so we can not say from this dataset that there is a relationship between female plumage brightness and fledging success.
+
+# Google? y/n
+# Yes, for the line-of-best-fit.
+```
