@@ -7,6 +7,14 @@
 # install.packages("palmerpenguins", "ggplot2", "tidyr", "dplyr", "devtools", "emmeans")
 # devtools::install_github('Mikata-Project/ggthemr')
 
+#==Key Linear Regression Assumptions or Concepts ===============================
+#1) X or Y do not have to be normal
+#2) Y is normally distributed for each x
+#3) Assuming linear relationship
+#4) X and Y variance are similar
+#5) Our residuals should be randomly distributed and centered on zero
+
+
 library(ggplot2)
 library(ggthemr)
 library(tidyr)

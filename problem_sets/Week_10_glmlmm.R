@@ -15,7 +15,7 @@ nestlings <- read.csv("datasets/nestlings.csv")
 swallows <- read.csv("datasets/swallows.csv")
 
 # optional set theme
-ggthemr(palette = "flat dark", layout = "clean", text_size = 18)
+#ggthemr(palette = "flat dark", layout = "clean", text_size = 18)
 
 # Question 1: In the swallows dataset, each row is a breeding female tree swallow
 # and the columns tell you her brightness, which treatment she was in, her brood size,
@@ -35,18 +35,25 @@ swallows %>% mutate(percent_fledge = nestlings_lived/brood_size) %>%
   ggplot(aes(x = treatment, y = mean_fledge)) +geom_col()
 # 1b. Create a plot of the overall percentage of nestlings that fledged in
 # the predator and control groups.
+swallows %>%
+  group_by(treatment) %>%
+  summarize(percent_fledged_of_total = sum(nestlings_lived)/132) %>%
+  ggplot(aes(x=treatment, y=percent_fledged_of_total)) + geom_col()
 #
 # 1c. Use a generalized linear model (aka logistic regression) to test whether
 # breeding success differed between predator and control groups using "success"
 # as a response variable.
+glm(formula=as.factor(success) ~ treatment, data=swallows, family='binomial')
 #
 # 1d. Use a generalized linear model (aka logistic regression) to test whether
 # the proportion of nestlings that fledged from each nest differed between
 # treatments. How do you interpret the output?
+
 #
 # 1e. Use a generalized linear model to test whether the total number of
 # offspring that females succesfully produced differed between treatment and control groups.
 # What glm family should you use?
+#use poission family
 #
 # 1f: Considering your approaches in 1c - 1e: what is the "best" way to answer
 # the question: "Did predation affect breeding success of swallows?" Why?
@@ -63,17 +70,33 @@ swallows %>% mutate(percent_fledge = nestlings_lived/brood_size) %>%
 #
 # 2a. Make a plot of mean mass for the predator and control treatments
 #
+nestlings %>%
+  group_by(treatment) %>%
+  summarise(mean_mass = mean(mass)) %>%
+  ggplot(aes(x=treatment, y=mean_mass)) +geom_col()
 # 2b. Make a lm that tests the effect of treatment on nestling size. How do you
 # interpret the coefficients and p vals?
+lm(formula=mass~treatment, data=nestlings) %>% summary()
+# Intercept: Estimated mean mass in control group
+# treatment predation: Estimated difference in mean mass of predatation group relative to control group
+# All p-values found to be significant, meaning that we are unlikely to see this difference by random chance.
 
 # 2c. Make a lmm that tests the effects of treatment on nestling size, properly
 # accounting for the interdependence of nestlings within the same nest. (hint: lmer()).
 # Compare and contrast the results of your lm and lmm. How do the coefficients and
 # p values differ?
+lmer(formula = mass ~ treatment + (1|nest), data=nestlings) %>% summary()
+# P values no longer indicate significant difference betwween treatments.
 
 # Question 3: test for effects of treatment on individual nestling fledging success
 # 3a: Make a plot showing the differences in percent fledging success for nestlings
 # in the control vs. predator treatment
+nestlings %>%
+  group_by(treatment) %>%
+  count(nestling_fate) %>%
+  group_by(treatment) %>%
+  summarise(percent_fledged=n/sum(n)) %>%
+  ggplot(aes(x=treatment, y=percent_fledged)) + geom_col()
 #
 # 3b: Use a normal lm to model the effects of treatment on fledging success (yes this isn't the best approach).
 # You'll first want to create a new vector that codes nestling fate as a numeric

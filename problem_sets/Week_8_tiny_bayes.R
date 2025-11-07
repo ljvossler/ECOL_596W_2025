@@ -2,15 +2,15 @@
 
 
 # What proportion p of a planet's surface is water?
-# Toss a globe 12 times, what do you find?
-water <- 7
-land <- 4
+# Toss a globe 10 times, what do you find?
+water <- 9
+land <- 1
 total_toss <- water + land
 
-# dbinom will give us the probability
+# dbinom will give us the probability (likelihood)
 # of seeing W waters for any hypothesized p
 
-dbinom(water, size = total_toss, prob = 0.2)
+dbinom(water, size = total_toss, prob = 0.8)
 
 
 # Let's say we have no idea how much water on earth there is,
@@ -31,14 +31,15 @@ plot(likelihoods ~ ps, data = p_grid, pch = 19)
 
 p_grid$prior <- p_grid$likelihoods
 
-# Now we toss the globe 14 more times
-water2 <- 7
-land2 <- 4
+# Now we toss the globe 17 more times
+water2 <- 5
+land2 <- 12
 total_toss2 <- water2 + land2
 
 
 p_grid$new_likelihoods <-
   dbinom(water2, size = total_toss2, prob = p_grid$ps)
+plot(new_likelihoods ~ ps, data = p_grid, pch = 19)
 
 p_grid$unstandardized_posterior <- p_grid$prior * p_grid$new_likelihoods
 p_grid$posterior <- (p_grid$prior * p_grid$new_likelihoods)/
