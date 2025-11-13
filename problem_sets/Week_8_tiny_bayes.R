@@ -22,7 +22,7 @@ p_grid <- data.frame(ps = seq(from = 0, to = 1, length.out = 100))
 p_grid$likelihoods <- dbinom(water, size = total_toss, prob = p_grid$ps)
 head(p_grid)
 
-plot(likelihoods ~ ps, data = p_grid, pch = 19)
+plot(new_likelihoods ~ ps, data = p_grid, pch = 19)
 
 # lets update the data
 # Let's call sampling A our
@@ -30,13 +30,17 @@ plot(likelihoods ~ ps, data = p_grid, pch = 19)
 # aka our prior
 
 p_grid$prior <- p_grid$likelihoods
+<<<<<<< HEAD
 
+=======
+head(p_grid)
+>>>>>>> 3e33b60ebdba04d94ed125a7ff3a6150f0e4b550
 # Now we toss the globe 17 more times
 water2 <- 5
 land2 <- 12
 total_toss2 <- water2 + land2
 
-
+head(p_grid)
 p_grid$new_likelihoods <-
   dbinom(water2, size = total_toss2, prob = p_grid$ps)
 plot(new_likelihoods ~ ps, data = p_grid, pch = 19)
@@ -72,7 +76,7 @@ hist(p)
 # let's break up this loop and see what it says
 # The first iteration of the loop is i = 2
 
-# pick a new p from a random distribution, centered on our original p, with sd = 0.1
+# pick a new p from a normal distribution, centered on our original p, with sd = 0.1
 # Notice that the indicies are referring to step 2, or step 2-1 e.g. p[i-1]
 p_new <- rnorm( 1 , p[1] , 0.1 )
 if ( p_new < 0 ) p_new <- abs( p_new ) # quick check to make sure p ends up > 0

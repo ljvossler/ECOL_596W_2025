@@ -1,7 +1,7 @@
 # ECOL 596W
 # Week 7B: Regression practice
 # Made by: Sabrina McNew
-# Last modified: August 8, 2023
+# Last modified: October 23, 2025
 
 # Package installation, if you don't already have them
 # install.packages("palmerpenguins", "ggplot2", "tidyr", "dplyr", "devtools", "emmeans")
@@ -47,16 +47,8 @@ filter(penguins, is.na(flipper_length_mm))
 # 1e: Let's put this model to work. Say you catch a 4000 gram penguin. How long
 # do you think it's flipper will be? Calculate the value using the model coeffs.
 # what is the equation of the model line?
-#
-head(penguins)
 
-lm1 <- lm(body_mass_g ~ flipper_length_mm, data = penguins)
-lm1 <- lm(flipper_length_mm ~ body_mass_g, data = penguins)
-lm1$coefficients
-
-(0.01527592  * 4000 ) + 136
-summary(lm1)
-#1f: R will also calculated predicted values of Y for us, using the predict()
+# 1f: R will also calculated predicted values of Y for us, using the predict()
 # function. Read the documentation of this function and try to figure out how it works.
 # Use predict() to predict the ys for a set of four penguins with mass (2120,
 # 5780, 4700, and 8001)
