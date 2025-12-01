@@ -2,3 +2,14 @@
 .Rhistory
 .RData
 .Ruserdata
+group_projects/
+present_a_package/console/
+present_a_package/example_data.txt
+present_a_package/extraparams
+present_a_package/joblist1.txt
+present_a_package/results_summary.csv
+present_a_package/seed.txt
+present_a_package/structure_results/
+present_a_package/vossler_package.qmd
+present_a_package/vossler_package_files/
+
