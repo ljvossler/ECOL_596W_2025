@@ -166,9 +166,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="running-parallelstructure" class="level2">
 <h2 class="anchored" data-anchor-id="running-parallelstructure">Running ParallelStructure</h2>
 <p>Our analysis can now be conveniently performed by calling a single function. and setting a few required/useful parameters (ie: the path to STRUCTURE executable, joblist, datafile, etc.) Though not required, I recommend including <code>printqhat=1</code> to automatically generate graphical outputs.</p>
-<p>parallel_structure(structure_path=‘console/’,joblist=‘joblist1.txt’,n_cpu=4,</p>
-<p>infile=‘example_data.txt’,outpath=‘structure_results/’,</p>
-<p>numinds=987,numloci=9,printqhat=1)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">parallel_structure</span>(<span class="at">structure_path=</span><span class="st">'console/'</span>,<span class="at">joblist=</span><span class="st">'joblist1.txt'</span>,<span class="at">n_cpu=</span><span class="dv">4</span>,</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">infile=</span><span class="st">'example_data.txt'</span>,<span class="at">outpath=</span><span class="st">'structure_results/'</span>,</span>
@@ -177,55 +174,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>Loading required package: parallel</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "starting work at 2025-12-01 16:51:18.003283"
-[1] "job T1 was calculated  at 2025-12-01 16:51:34.025867"
-[1] "job T2 was calculated  at 2025-12-01 16:51:37.890599"
-[1] "job T3 was calculated  at 2025-12-01 16:51:37.913605"
-[1] "job T4 was calculated  at 2025-12-01 16:51:42.661536"
-[1] "job T5 was calculated  at 2025-12-01 16:51:47.427319"
-[1] "job T7 was calculated  at 2025-12-01 16:51:56.663274"
-[1] "job T6 was calculated  at 2025-12-01 16:51:57.043509"
-[1] "job T8 was calculated  at 2025-12-01 16:52:05.778034"
-[1] "job T9 was calculated  at 2025-12-01 16:52:07.30351"
-[1] "job T10 was calculated  at 2025-12-01 16:52:18.444033"
-[1] "job T12 was calculated  at 2025-12-01 16:52:25.784926"
-[1] "job T13 was calculated  at 2025-12-01 16:52:41.972869"
-[1] "job T14 was calculated  at 2025-12-01 16:52:42.708266"
-[1] "job T15 was calculated  at 2025-12-01 16:53:01.647844"
-[1] "job T16 was calculated  at 2025-12-01 16:53:16.597104"
-[1] "job T19 was calculated  at 2025-12-01 16:53:29.170635"
-[1] "job T17 was calculated  at 2025-12-01 16:53:38.345189"
-[1] "job T18 was calculated  at 2025-12-01 16:53:38.664728"
-[1] "job T11_1_4 was calculated  at 2025-12-01 16:53:38.954493"
-[1] "job T11_1_3 was calculated  at 2025-12-01 16:53:46.573432"
-[1] "job T20 was calculated  at 2025-12-01 16:53:49.654227"
-[1] "job T11_1_8 was calculated  at 2025-12-01 16:53:51.125962"
-[1] "job T11_1_2 was calculated  at 2025-12-01 16:53:52.284006"
-[1] "job T11_1_7 was calculated  at 2025-12-01 16:53:57.270777"
-[1] "job T11_2_6 was calculated  at 2025-12-01 16:54:00.337729"
-[1] "job T11_1_5 was calculated  at 2025-12-01 16:54:02.202373"
-[1] "job T11_1_6 was calculated  at 2025-12-01 16:54:05.319149"
-[1] "job T11_2_5 was calculated  at 2025-12-01 16:54:05.627243"
-[1] "job T11_3_5 was calculated  at 2025-12-01 16:54:10.629622"
-[1] "job T11_2_3 was calculated  at 2025-12-01 16:54:13.869398"
-[1] "job T11_3_4 was calculated  at 2025-12-01 16:54:14.451653"
-[1] "job T11_2_4 was calculated  at 2025-12-01 16:54:19.20156"
-[1] "job T11_4_5 was calculated  at 2025-12-01 16:54:21.184447"
-[1] "job T11_3_8 was calculated  at 2025-12-01 16:54:24.516441"
-[1] "job T11_2_7 was calculated  at 2025-12-01 16:54:28.122606"
-[1] "job T11_5_6 was calculated  at 2025-12-01 16:54:30.755471"
-[1] "job T11_4_8 was calculated  at 2025-12-01 16:54:34.711399"
-[1] "job T11_2_8 was calculated  at 2025-12-01 16:54:35.233824"
-[1] "job T11_3_6 was calculated  at 2025-12-01 16:54:39.27611"
-[1] "job T11_6_8 was calculated  at 2025-12-01 16:54:42.203981"
-[1] "job T11_6_7 was calculated  at 2025-12-01 16:54:44.104091"
-[1] "job T11_4_6 was calculated  at 2025-12-01 16:54:50.464549"
-[1] "job T11_3_7 was calculated  at 2025-12-01 16:54:51.624339"
-[1] "job T11_5_7 was calculated  at 2025-12-01 16:55:05.398425"
-[1] "job T11_4_7 was calculated  at 2025-12-01 16:55:08.050158"
-[1] "job T11_7_8 was calculated  at 2025-12-01 16:55:21.844643"
-[1] "job T11_5_8 was calculated  at 2025-12-01 16:55:24.889266"
-[1] "was calculated  at 2025-12-01 16:55:24.890057"</code></pre>
+<pre><code>[1] "starting work at 2025-12-01 18:02:57.983697"
+[1] "job T1 was calculated  at 2025-12-01 18:03:12.831766"
+[1] "job T2 was calculated  at 2025-12-01 18:03:17.136696"
+[1] "job T3 was calculated  at 2025-12-01 18:03:17.339647"
+[1] "job T4 was calculated  at 2025-12-01 18:03:21.958459"
+[1] "job T5 was calculated  at 2025-12-01 18:03:26.210222"
+[1] "job T7 was calculated  at 2025-12-01 18:03:37.443662"
+[1] "job T6 was calculated  at 2025-12-01 18:03:37.748357"
+[1] "job T8 was calculated  at 2025-12-01 18:03:46.168163"
+[1] "job T9 was calculated  at 2025-12-01 18:03:47.651718"
+[1] "job T10 was calculated  at 2025-12-01 18:03:59.290697"
+[1] "job T12 was calculated  at 2025-12-01 18:04:06.536468"
+[1] "job T13 was calculated  at 2025-12-01 18:04:22.126751"
+[1] "job T14 was calculated  at 2025-12-01 18:04:22.576323"
+[1] "job T15 was calculated  at 2025-12-01 18:04:40.967216"
+[1] "job T16 was calculated  at 2025-12-01 18:04:54.618365"
+[1] "job T19 was calculated  at 2025-12-01 18:05:07.477426"
+[1] "job T18 was calculated  at 2025-12-01 18:05:16.319799"
+[1] "job T17 was calculated  at 2025-12-01 18:05:16.990681"
+[1] "job T11_1_4 was calculated  at 2025-12-01 18:05:17.29991"
+[1] "job T11_1_3 was calculated  at 2025-12-01 18:05:24.128745"
+[1] "job T20 was calculated  at 2025-12-01 18:05:27.537632"
+[1] "job T11_1_8 was calculated  at 2025-12-01 18:05:29.261299"
+[1] "job T11_1_2 was calculated  at 2025-12-01 18:05:30.781072"
+[1] "job T11_1_7 was calculated  at 2025-12-01 18:05:34.295551"
+[1] "job T11_2_6 was calculated  at 2025-12-01 18:05:38.293295"
+[1] "job T11_1_5 was calculated  at 2025-12-01 18:05:39.90353"
+[1] "job T11_2_5 was calculated  at 2025-12-01 18:05:42.812211"
+[1] "job T11_1_6 was calculated  at 2025-12-01 18:05:44.036884"
+[1] "job T11_3_5 was calculated  at 2025-12-01 18:05:48.779647"
+[1] "job T11_3_4 was calculated  at 2025-12-01 18:05:50.825133"
+[1] "job T11_2_3 was calculated  at 2025-12-01 18:05:51.643307"
+[1] "job T11_2_4 was calculated  at 2025-12-01 18:05:58.139696"
+[1] "job T11_4_5 was calculated  at 2025-12-01 18:05:59.391718"
+[1] "job T11_3_8 was calculated  at 2025-12-01 18:06:00.892743"
+[1] "job T11_2_7 was calculated  at 2025-12-01 18:06:05.836019"
+[1] "job T11_5_6 was calculated  at 2025-12-01 18:06:08.946153"
+[1] "job T11_4_8 was calculated  at 2025-12-01 18:06:11.107842"
+[1] "job T11_2_8 was calculated  at 2025-12-01 18:06:14.921601"
+[1] "job T11_3_6 was calculated  at 2025-12-01 18:06:16.71356"
+[1] "job T11_6_8 was calculated  at 2025-12-01 18:06:20.109067"
+[1] "job T11_6_7 was calculated  at 2025-12-01 18:06:20.267067"
+[1] "job T11_4_6 was calculated  at 2025-12-01 18:06:27.852765"
+[1] "job T11_3_7 was calculated  at 2025-12-01 18:06:31.043248"
+[1] "job T11_5_7 was calculated  at 2025-12-01 18:06:42.955158"
+[1] "job T11_4_7 was calculated  at 2025-12-01 18:06:47.752276"
+[1] "job T11_7_8 was calculated  at 2025-12-01 18:07:00.435055"
+[1] "job T11_5_8 was calculated  at 2025-12-01 18:07:04.736229"
+[1] "was calculated  at 2025-12-01 18:07:04.737093"</code></pre>
 </div>
 </div>
 <p><strong>NOTE:</strong> ParallelStructure has two functions that perform the same task of running STRUCTURE across multiple CPU cores. However, each function performs this task differently behind the scenes. Here I demonstrate the use of the <code>parallel_structure()</code> function, which relies on the <code>parallel_package</code> to perform parallel computing. This package is included in all recent Base R installations, so I recommend using it for this reason.</p>
@@ -240,12 +237,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(result_summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  X1 run_id burnin iterations k ln_prob_data mean_llh var_llh mean_alpha
-1  2     T1   1000      10000 3     -10098.1  -9999.3   197.5     0.0366
-2  3     T2   1000      10000 4      -9596.5  -9459.9   273.1     0.0354
-3  4     T3   1000      10000 3     -10620.8 -10507.6   226.3     0.0405
-4  5     T4   1000      10000 4     -10116.7  -9987.8   257.9     0.0334
-5  6     T5   1000      10000 3      -8099.3  -8018.4   161.7     0.0339
-6  7     T6   1000      10000 4      -9597.7  -9441.9   311.6     0.0365</code></pre>
+1  2     T1   1000      10000 3     -10100.2  -9999.2   201.9     0.0384
+2  3     T2   1000      10000 4      -9591.2  -9459.4   263.4     0.0338
+3  4     T3   1000      10000 3     -10629.3 -10508.6   241.5     0.0419
+4  5     T4   1000      10000 4     -10121.5  -9987.7   267.7     0.0336
+5  6     T5   1000      10000 3      -8099.0  -8018.3   161.3     0.0341
+6  7     T6   1000      10000 4      -9592.8  -9438.0   309.7     0.0355</code></pre>
 </div>
 </div>
 <div class="quarto-figure quarto-figure-center">
